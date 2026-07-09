@@ -1,11 +1,15 @@
-const User=require('../model/User');
+const User = require('../model/User');
+const bcrypt = require("bcrypt");
 
-const createUser=async(req,res)=>{
-    const {name,email,password}=req.body;
-    try{
-        if(!name || !email || !password){
+
+const createUser = async (req, res) => {
+    const { name, email, password } = req.body;
+
+    try {
+
+        if (!name || !email || !password) {
             return res.status(400).json({
-                message:"All fields are required",
+                message: "All fields are required",
             });
         }
 
@@ -15,74 +19,109 @@ const createUser=async(req,res)=>{
             }
         });
 
-        if(existingUser){
+        if (existingUser) {
 
-        return res.status(409).json({
-            success:false,
-            message:"User already exists"
-        });
+            return res.status(409).json({
+                success: false,
+                message: "User already exists"
+            });
 
         }
 
+        // HASH PASSWORD BEFORE STORING
+        bcrypt.hash(password, 10, async (err, hash) => {
 
+            if (err) {
+                return res.status(500).json({
+                    success: false,
+                    message: "Something went wrong"
+                });
+            }
 
-        const user=await User.create({
-            name,
-            email,
-            password
-        });
+            const user = await User.create({
+                name,
+                email,
+                password: hash
+            });
 
-        res.status(201).json({
-            success:true,
-            message:"User created successfuly",
-            user,
+            res.status(201).json({
+                success: true,
+                message: "User created successfully",
+                user,
+            });
+
         });
 
     }
-    catch(err){
+    catch (err) {
 
         console.log(err);
-        
+
         res.status(500).json({
-            success:false,
-            message:err.message,
-            
+            success: false,
+            message: err.message,
+
         });
     }
 }
 
 
-const loginUser=async(req,res)=>{
-    try{
+const loginUser = async (req, res) => {
 
-    
-    const {email,password}=req.body;
+    try {
 
-    const user=await User.findOne({
-        where:{email}
-    });
-    if(!user){
-        return res.status(404).json({
-            success:false,
-            message:"User not found"
+        const { email, password } = req.body;
+
+        const user = await User.findOne({
+            where: { email }
         });
-    }
-    if(user.password!=password){
-        return res.status(401).json({
-            success:false,
-            message:"Invalid password"
+
+        if (!user) {
+
+            return res.status(404).json({
+                success: false,
+                message: "User not found"
+            });
+
+        }
+
+        // COMPARE ENTERED PASSWORD WITH HASHED PASSWORD
+        bcrypt.compare(password, user.password, (err, result) => {
+
+            if (err) {
+
+                return res.status(500).json({
+                    success: false,
+                    message: "Something went wrong"
+                });
+
+            }
+
+            if (!result) {
+
+                return res.status(401).json({
+                    success: false,
+                    message: "User not authorized"
+                });
+
+            }
+
+            res.status(200).json({
+                success: true,
+                message: "User login successful"
+            });
+
         });
+
+    } catch (err) {
+
+        res.status(500).json({
+            success: false,
+            message: "Something went wrong"
+        });
+
     }
-    res.status(200).json({
-        success:true,
-        message:"Login successful"
-    });
-}catch(err){
-res.status(500).json({
-    success:false,
-    message:"Something went wrong"
-    });
-    }
+
 }
 
-module.exports={createUser, loginUser};
+module.exports = { createUser, loginUser };
