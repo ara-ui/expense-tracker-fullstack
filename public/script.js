@@ -29,10 +29,13 @@ async function addUser(e) {
 
     catch (err) {
 
-        console.log(err);
+        if (err.response){
+            alert(err.response.data.message);
+        }else{
+            alert("Something went wrong");
+        }
 
-        alert("Something went wrong");
-
+        console.log(err.message);
     }
 
 }
