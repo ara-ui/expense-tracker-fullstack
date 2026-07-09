@@ -1,78 +1,78 @@
-/* Reset */
-
 *{
     margin:0;
     padding:0;
     box-sizing:border-box;
-    font-family:Arial, Helvetica, sans-serif;
+    font-family:"Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* Body */
-
 body{
-    background:#f3f4f6;
+    background:#f4f6f9;
     display:flex;
     justify-content:center;
     align-items:center;
-    height:100vh;
+    min-height:100vh;
 }
-
-/* Form Card */
 
 #loginForm{
-    width:350px;
-    background:#fff;
-    padding:30px;
-    border-radius:10px;
-    box-shadow:0 4px 10px rgba(0,0,0,0.15);
+    width:420px;
+    background:white;
+    padding:40px;
+    border-radius:12px;
+    box-shadow:0 8px 20px rgba(0,0,0,0.12);
 }
 
-/* Labels */
+#loginForm h2{
+    text-align:center;
+    margin-bottom:30px;
+    color:#333;
+}
 
 #loginForm label{
     display:block;
-    margin-top:15px;
-    margin-bottom:6px;
-    font-size:18px;
+    margin-bottom:8px;
+    margin-top:18px;
+    font-weight:600;
+    color:#444;
 }
-
-/* Input */
 
 #loginForm input{
     width:100%;
-    padding:10px;
+    padding:12px;
     border:1px solid #ccc;
-    border-radius:5px;
-    font-size:16px;
+    border-radius:6px;
+    font-size:15px;
+    transition:.3s;
 }
 
-/* Button */
+#loginForm input:focus{
+    outline:none;
+    border-color:#0d6efd;
+}
 
 #loginForm button{
     width:100%;
-    margin-top:20px;
-    padding:10px;
-    background:#007bff;
+    padding:12px;
+    margin-top:30px;
+    background:#0d6efd;
     color:white;
     border:none;
-    border-radius:5px;
+    border-radius:6px;
     cursor:pointer;
     font-size:16px;
+    transition:.3s;
 }
 
 #loginForm button:hover{
-    background:#0056b3;
+    background:#0b5ed7;
 }
-
-/* Signup Link */
 
 .signup-link{
     display:block;
-    margin-top:15px;
     text-align:center;
+    margin-top:20px;
     text-decoration:none;
-    color:#007bff;
-    font-weight:bold;
+    color:#0d6efd;
+    font-weight:600;
 }
 
 .signup-link:hover{

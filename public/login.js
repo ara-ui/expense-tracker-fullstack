@@ -1,4 +1,4 @@
-const form=document.getElementById("login-form");
+const form=document.getElementById("loginForm");
 
 form.addEventListener("submit",loginUser);
 
@@ -12,8 +12,9 @@ async function loginUser(e){
     try{
         const response=await axios.post("http://localhost:3000/users/login",user);
         alert(response.data.message);
-        window.location.href = "signup.html";
-        
+
+        window.location.href = "expense.html";
+
     }catch(err){
         console.log(err.message);
         alert(err.response.data.message);
