@@ -27,12 +27,17 @@ async function addExpense(e){
     };
 
     try{
-
+        const token=localStorage.getItem("token");
         const response = await axios.post(
 
             "http://localhost:3000/expense/addexpense",
 
-            expense
+            expense,
+            {
+                headers:{
+                    Authorization:token
+                }
+            }
 
         );
 
@@ -55,10 +60,16 @@ async function addExpense(e){
 async function getExpenses(){
 
     try{
+        const token = localStorage.getItem("token");
 
         const response = await axios.get(
 
-            "http://localhost:3000/expense/getexpenses"
+            "http://localhost:3000/expense/getexpenses",
+             {
+                headers:{
+                    Authorization:token
+                }
+            }
 
         );
 
@@ -105,10 +116,16 @@ function showExpense(expense){
 async function deleteExpense(id, button){
 
     try{
+        const token = localStorage.getItem("token");
 
         await axios.delete(
 
-            `http://localhost:3000/expense/deleteexpense/${id}`
+            `http://localhost:3000/expense/deleteexpense/${id}`,
+            {
+    headers:{
+        Authorization:token
+        }
+    }
 
         );
 

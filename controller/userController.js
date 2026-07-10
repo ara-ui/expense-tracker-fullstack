@@ -1,5 +1,16 @@
 const User = require('../model/User');
 const bcrypt = require("bcrypt");
+const jwt=require('jsonwebtoken');
+
+//token generation func
+function generateAccessToken(id){
+
+    return jwt.sign(
+        {userId:id},
+        "expense_secret_key"
+
+    );
+}
 
 
 const createUser = async (req, res) => {
@@ -106,9 +117,11 @@ const loginUser = async (req, res) => {
 
             }
 
+            const token=generateAccessToken(user.id);
             res.status(200).json({
-                success: true,
-                message: "User login successful"
+                success:true,
+                message:"Login successful",
+                token:token
             });
 
         });

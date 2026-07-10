@@ -2,8 +2,12 @@ const express=require('express');
 const sequelize=require('./db');
 const cors=require('cors');
 const path=require('path');
+
+require('./model');
+
 const userRoutes=require('./routes/userRoutes');
 const expenseRoutes=require('./routes/expenseRoutes');
+
 
 
 
@@ -19,12 +23,13 @@ app.use(express.static('public'));
 app.use(express.urlencoded({extended:true}));
 
 //routes
+
 app.use('/users',userRoutes);
 app.use('/expense',expenseRoutes);
 
 //sync database
 
-sequelize.sync().then(()=>{
+sequelize.sync({alter:true}).then(()=>{
     console.log("Table created succesfully");
     
     app.listen(3000,()=>{

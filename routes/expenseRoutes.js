@@ -7,11 +7,14 @@ const {
     deleteExpense
 }=require('../controller/expenseController');
 
+const authenticate=require('../middleware/authentication');
 
-router.post('/addexpense',addExpense);
 
-router.get('/getexpenses',getExpenses);
 
-router.delete('/deleteexpense/:id',deleteExpense);
+router.post('/addexpense',authenticate,addExpense);
+
+router.get('/getexpenses',authenticate,getExpenses);
+
+router.delete('/deleteexpense/:id',authenticate,deleteExpense);
 
 module.exports=router;

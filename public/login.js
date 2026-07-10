@@ -11,6 +11,8 @@ async function loginUser(e){
     }
     try{
         const response=await axios.post("http://localhost:3000/users/login",user);
+        localStorage.setItem("token", response.data.token);
+        
         alert(response.data.message);
 
         window.location.href = "expense.html";
