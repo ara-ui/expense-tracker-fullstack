@@ -1,3 +1,5 @@
+const BASE_URL = "http://localhost:3000";
+
 const form = document.getElementById("expenseForm");
 
 const expenseList = document.getElementById("expenseList");
@@ -9,6 +11,9 @@ window.addEventListener("DOMContentLoaded", getExpenses);
 // Submit Form
 
 form.addEventListener("submit", addExpense);
+
+document.getElementById("rzp-button1")
+.addEventListener("click", buyPremium);
 
 // Add Expense
 
@@ -29,8 +34,7 @@ async function addExpense(e){
     try{
         const token=localStorage.getItem("token");
         const response = await axios.post(
-
-            "http://localhost:3000/expense/addexpense",
+            `${BASE_URL}/expense/addexpense`,
 
             expense,
             {
@@ -64,7 +68,7 @@ async function getExpenses(){
 
         const response = await axios.get(
 
-            "http://localhost:3000/expense/getexpenses",
+            `${BASE_URL}/expense/getexpenses`,
              {
                 headers:{
                     Authorization:token
@@ -120,7 +124,7 @@ async function deleteExpense(id, button){
 
         await axios.delete(
 
-            `http://localhost:3000/expense/deleteexpense/${id}`,
+            `${BASE_URL}/expense/deleteexpense/${id}`,
             {
     headers:{
         Authorization:token
@@ -136,6 +140,113 @@ async function deleteExpense(id, button){
     catch(err){
 
         console.log(err);
+
+    }
+
+}
+
+
+async function buyPremium() {
+
+    try {
+
+        const token = localStorage.getItem("token");
+
+        // Create order from backend
+        const response = await axios.get(
+            `${BASE_URL}/purchase/premiummembership`,
+            {
+                headers: {
+                    Authorization: token
+                }
+            }
+        );
+
+        console.log(response.data);
+
+        const cashfree = Cashfree({
+            mode: "sandbox"
+        });
+
+        let checkoutOptions = {
+
+            paymentSessionId: response.data.payment_session_id,
+
+            redirectTarget: "_modal"
+
+        };
+
+        cashfree.checkout(checkoutOptions).then(async(result) => {
+
+            console.log(result);
+
+            // User closed popup
+            if (result.error) {
+
+                await axios.post(
+
+                    `${BASE_URL}/purchase/failedtransaction`,
+
+                    {
+
+                        order_id: response.data.order_id
+
+                    },
+
+                    {
+
+                        headers: {
+
+                            Authorization: token
+
+                        }
+
+                    }
+
+                );
+
+                alert("TRANSACTION FAILED");
+
+            }
+
+            // Payment completed
+            if (result.paymentDetails) {
+
+                await axios.post(
+
+                    `${BASE_URL}/purchase/updatetransactionstatus`,
+
+                    {
+
+                        order_id: response.data.order_id
+
+                    },
+
+                    {
+
+                        headers: {
+
+                            Authorization: token
+
+                        }
+
+                    }
+
+                );
+
+                alert("Transaction Successful");
+
+            }
+
+        });
+
+    }
+
+    catch (err) {
+
+        console.log(err);
+
+        alert("Something went wrong");
 
     }
 

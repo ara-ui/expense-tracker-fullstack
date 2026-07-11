@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const express=require('express');
 const sequelize=require('./db');
 const cors=require('cors');
@@ -7,6 +9,7 @@ require('./model');
 
 const userRoutes=require('./routes/userRoutes');
 const expenseRoutes=require('./routes/expenseRoutes');
+const purchaseRoutes = require("./routes/purchaseRoutes");
 
 
 
@@ -26,6 +29,7 @@ app.use(express.urlencoded({extended:true}));
 
 app.use('/users',userRoutes);
 app.use('/expense',expenseRoutes);
+app.use('/purchase', purchaseRoutes);
 
 //sync database
 

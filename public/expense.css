@@ -108,3 +108,43 @@ h1{
 .delete-btn:hover{
     background:#bb2d3b;
 }
+
+/* Buy Premium Button */
+
+#rzp-button1{
+
+    position: fixed;
+
+    top: 20px;
+
+    right: 20px;
+
+    padding: 10px 18px;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    background-color: #f4b400;
+
+    color: #fff;
+
+    border: none;
+
+    border-radius: 8px;
+
+    cursor: pointer;
+
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+
+    transition: 0.3s;
+
+}
+
+#rzp-button1:hover{
+
+    background-color: #d89b00;
+
+    transform: translateY(-2px);
+
+}

@@ -7,8 +7,7 @@ function generateAccessToken(id){
 
     return jwt.sign(
         {userId:id},
-        "expense_secret_key"
-
+        process.env.JWT_SECRET
     );
 }
 
