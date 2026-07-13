@@ -1,39 +1,64 @@
-const User=require('../model/User');
-const Expense=require('../model/Expense');
+const User = require("../model/User");
+const Expense = require("../model/Expense");
+const sequelize = require("../db");
 
-const getLeaderBoard=async (req,res)=>{
-    try{
-        const users=await User.findAll();
+const getLeaderBoard = async (req, res) => {
 
-        const leaderboard=[];
+    try {
 
-        for(const user of users){
-            const expenses=await Expense.findAll({
-                where:{
-                    UserId:user.id
+        const leaderboard = await User.findAll({
+
+            attributes: [
+
+                "id",
+
+                "name",
+
+                [
+                    sequelize.fn(
+                        "SUM",
+                        sequelize.col("Expenses.amount")
+                    ),
+                    "totalExpense"
+                ]
+
+            ],
+
+            include: [
+
+                {
+                    model: Expense,
+                    attributes: []
                 }
-            });
-            let totalExpense=0;
 
-            expenses.forEach(expense=>{
-                totalExpense += Number(expense.amount);
-            });
-            leaderboard.push({
-                name:user.name,
-                totalExpense
-            });
-        }
-        leaderboard.sort((a, b) => b.totalExpense - a.totalExpense);
+            ],
+
+            group: ["User.id"],
+
+            order: [[sequelize.literal("totalExpense"), "DESC"]]
+
+        });
 
         res.status(200).json(leaderboard);
+
     }
-    catch(err){
-        console.log(err)
+
+    catch (err) {
+
+        console.log(err);
 
         res.status(500).json({
-            success:false,
-            message:err.message
+
+            success: false,
+
+            message: err.message
+
         });
+
     }
+
 };
-module.exports={getLeaderBoard};
+
+module.exports = {
+    getLeaderBoard
+};
