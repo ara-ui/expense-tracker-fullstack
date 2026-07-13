@@ -1,11 +1,27 @@
 const { Cashfree } = require("cashfree-pg");
 
 const Order = require("../model/Order");
+const jwt = require("jsonwebtoken");
 
 // Cashfree Configuration
 Cashfree.XClientId = process.env.CASHFREE_APP_ID;
 Cashfree.XClientSecret = process.env.CASHFREE_SECRET_KEY;
 Cashfree.XEnvironment = Cashfree.SANDBOX;
+
+
+function generateAccessToken(id, name, isPremiumUser) {
+
+    return jwt.sign(
+        {
+            userId: id,
+            name: name,
+            isPremiumUser: isPremiumUser
+        },
+        process.env.JWT_SECRET
+    );
+
+}
+
 // Create Order
 exports.purchasePremium = async (req, res) => {
 
@@ -118,14 +134,20 @@ exports.updateTransactionStatus = async (req, res) => {
             await order.save();
 
             await req.user.update({
-                isPremium: true
+            isPremiumUser: true
             });
+
+            const token = generateAccessToken(
+                req.user.id,
+                req.user.name,
+                true
+            );
 
             return res.status(200).json({
                 success: true,
-                message: "Transaction Successful"
+                message: "Transaction Successful",
+                token: token
             });
-
         }
 
         return res.status(400).json({

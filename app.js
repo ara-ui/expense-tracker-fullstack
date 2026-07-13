@@ -10,6 +10,7 @@ require('./model');
 const userRoutes=require('./routes/userRoutes');
 const expenseRoutes=require('./routes/expenseRoutes');
 const purchaseRoutes = require("./routes/purchaseRoutes");
+const premiumRoutes = require("./routes/premiumRoutes");
 
 
 
@@ -30,6 +31,7 @@ app.use(express.urlencoded({extended:true}));
 app.use('/users',userRoutes);
 app.use('/expense',expenseRoutes);
 app.use('/purchase', purchaseRoutes);
+app.use("/premium", premiumRoutes);
 
 //sync database
 

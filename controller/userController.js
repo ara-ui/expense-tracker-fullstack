@@ -3,13 +3,20 @@ const bcrypt = require("bcrypt");
 const jwt=require('jsonwebtoken');
 
 //token generation func
-function generateAccessToken(id){
+function generateAccessToken(id, name, isPremiumUser){
 
     return jwt.sign(
-        {userId:id},
+        {
+            userId:id,
+            name:name,
+            isPremiumUser:isPremiumUser
+        },
         process.env.JWT_SECRET
     );
-}
+
+};
+
+//createuser
 
 
 const createUser = async (req, res) => {
@@ -38,7 +45,7 @@ const createUser = async (req, res) => {
 
         }
 
-        // HASH PASSWORD BEFORE STORING
+        // HASH PASSWORD to store while creating a user
         bcrypt.hash(password, 10, async (err, hash) => {
 
             if (err) {
@@ -95,7 +102,6 @@ const loginUser = async (req, res) => {
 
         }
 
-        // COMPARE ENTERED PASSWORD WITH HASHED PASSWORD
         bcrypt.compare(password, user.password, (err, result) => {
 
             if (err) {
@@ -116,24 +122,43 @@ const loginUser = async (req, res) => {
 
             }
 
-            const token=generateAccessToken(user.id);
-            res.status(200).json({
-                success:true,
-                message:"Login successful",
-                token:token
+            // Password matched
+            return res.status(200).json({
+
+                success: true,
+
+                message: "Login Successful",
+
+                token: generateAccessToken(
+
+                    user.id,
+
+                    user.name,
+
+                    user.isPremiumUser
+
+                )
+
             });
 
         });
 
-    } catch (err) {
+    }
 
-        res.status(500).json({
+    catch (err) {
+
+        console.log(err);
+
+        return res.status(500).json({
+
             success: false,
+
             message: "Something went wrong"
+
         });
 
     }
 
-}
+};
 
 module.exports = { createUser, loginUser };

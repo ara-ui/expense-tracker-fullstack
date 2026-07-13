@@ -4,16 +4,45 @@ const form = document.getElementById("expenseForm");
 
 const expenseList = document.getElementById("expenseList");
 
+const premiumMessage = document.getElementById("premiumMessage");
+const leaderboardBtn = document.getElementById("leaderboardBtn");
+const premiumBtn = document.getElementById("rzp-button1");
+
 // Load all expenses
 
-window.addEventListener("DOMContentLoaded", getExpenses);
+window.addEventListener("DOMContentLoaded", ()=>{
+    getExpenses();
+    showPremiumFeatures()
+});
 
 // Submit Form
 
 form.addEventListener("submit", addExpense);
 
-document.getElementById("rzp-button1")
-.addEventListener("click", buyPremium);
+premiumBtn.addEventListener("click", buyPremium);
+
+
+//show Premium Features
+
+function showPremiumFeatures(){
+    const token=localStorage.getItem("token");
+
+    if(!token) return;
+
+    const decodedToken=jwt_decode(token);
+
+    if(decodedToken.isPremiumUser){
+
+        premiumMessage.innerHTML="You are a Premium User now";
+
+        premiumBtn.style.display="none";
+
+        leaderboardBtn.style.display="inline-block";
+    }
+
+}
+
+
 
 // Add Expense
 
@@ -145,7 +174,7 @@ async function deleteExpense(id, button){
 
 }
 
-
+//buy premium btn
 async function buyPremium() {
 
     try {
@@ -168,84 +197,63 @@ async function buyPremium() {
             mode: "sandbox"
         });
 
-        let checkoutOptions = {
-
+        const checkoutOptions = {
             paymentSessionId: response.data.payment_session_id,
-
             redirectTarget: "_modal"
-
         };
 
-        cashfree.checkout(checkoutOptions).then(async(result) => {
+        cashfree.checkout(checkoutOptions).then(async (result) => {
 
             console.log(result);
 
-            // User closed popup
+            // User closed payment popup
             if (result.error) {
 
                 await axios.post(
-
                     `${BASE_URL}/purchase/failedtransaction`,
-
                     {
-
                         order_id: response.data.order_id
-
                     },
-
                     {
-
                         headers: {
-
                             Authorization: token
-
                         }
-
                     }
-
                 );
 
                 alert("TRANSACTION FAILED");
-
+                return;
             }
 
-            // Payment completed
+            // Payment Successful
             if (result.paymentDetails) {
 
-                await axios.post(
-
+                const paymentResponse = await axios.post(
                     `${BASE_URL}/purchase/updatetransactionstatus`,
-
                     {
-
                         order_id: response.data.order_id
-
                     },
-
                     {
-
                         headers: {
-
                             Authorization: token
-
                         }
-
                     }
-
                 );
+
+                // Save new premium token
+                localStorage.setItem("token", paymentResponse.data.token);
 
                 alert("Transaction Successful");
 
+                // Reload page to show premium features
+                location.reload();
             }
 
         });
 
-    }
-
-    catch (err) {
+    } catch (err) {
 
         console.log(err);
-
         alert("Something went wrong");
 
     }
