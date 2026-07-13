@@ -21,7 +21,12 @@ const User=sequelize.define("User",{
         type:DataTypes.STRING,
         allowNull:false
     },
-    isPremiumUser:{
+    
+totalExpense: {
+    type: DataTypes.INTEGER,
+    defaultValue: 0
+},
+isPremiumUser:{
     type:DataTypes.BOOLEAN,
     defaultValue:false
 }

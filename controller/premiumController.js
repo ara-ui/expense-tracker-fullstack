@@ -10,32 +10,14 @@ const getLeaderBoard = async (req, res) => {
 
             attributes: [
 
-                "id",
-
                 "name",
 
-                [
-                    sequelize.fn(
-                        "SUM",
-                        sequelize.col("Expenses.amount")
-                    ),
-                    "totalExpense"
-                ]
-
+               "totalExpense"
             ],
 
-            include: [
-
-                {
-                    model: Expense,
-                    attributes: []
-                }
-
-            ],
-
-            group: ["User.id"],
-
-            order: [[sequelize.literal("totalExpense"), "DESC"]]
+            order:[
+                ["totalExpense","DESC"]
+            ]
 
         });
 

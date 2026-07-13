@@ -20,6 +20,14 @@ const addExpense=async(req,res)=>{
             UserId:req.user.id
         });
 
+        //adding total expense in user table 
+        await req.user.update({
+
+        totalExpense:
+            Number(req.user.totalExpense) + Number(amount)
+
+        });
+
         res.status(201).json({
             success:true,
             message:"Expense Added",
@@ -63,16 +71,32 @@ const deleteExpense=async(req,res)=>{
     try{
         const id=req.params.id;
 
-        await Expense.destroy({
+        const expense=await Expense.findOne({
             where:{
                 id:req.params.id,
                 UserId:req.user.id
             }
         });
+
+        if(!expense){
+            return res.status(404).json({
+                success:false,
+                message:"Expense not found"
+            });
+        }
+
+        await expense.destroy();
+     
+        //updating total expense in user table after one expense deleted
+        await req.user.update({
+            totalExpense:Number(req.user.totalExpense)-Number(expense.amount)
+        });
+
         res.status(200).json({
             success:true,
             message:"Expense deleted"
         });
+    
     }catch(err){
         res.status(500).json({
             success:false,
