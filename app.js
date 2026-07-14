@@ -11,6 +11,7 @@ const userRoutes=require('./routes/userRoutes');
 const expenseRoutes=require('./routes/expenseRoutes');
 const purchaseRoutes = require("./routes/purchaseRoutes");
 const premiumRoutes = require("./routes/premiumRoutes");
+const passwordRoutes = require("./routes/password");
 
 
 
@@ -26,12 +27,14 @@ app.use(cors());
 app.use(express.static('public'));
 app.use(express.urlencoded({extended:true}));
 
+
 //routes
 
 app.use('/users',userRoutes);
 app.use('/expense',expenseRoutes);
 app.use('/purchase', purchaseRoutes);
 app.use("/premium", premiumRoutes);
+app.use("/password", passwordRoutes);
 
 //sync database
 
@@ -41,6 +44,7 @@ sequelize.sync({alter:true}).then(()=>{
     app.listen(3000,()=>{
     console.log("Server is running on port 3000");
     });
+    console.log("BREVO KEY:", process.env.BREVO_API_KEY);
 
 })
 .catch((err)=>{
