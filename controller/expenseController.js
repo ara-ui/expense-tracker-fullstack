@@ -1,11 +1,16 @@
 const Expense=require('../model/Expense');
 const aiService = require("../services/aiService");
 const User = require("../model/User");
+const sequelize = require("../db");
+
 
 const addExpense=async(req,res)=>{
+    let t;
+
     try{
 
-        
+     t = await sequelize.transaction();
+
         const {amount,description}=req.body;
 
         if(!amount || !description ){
@@ -31,22 +36,37 @@ const addExpense=async(req,res)=>{
             description,
             category,
             UserId:req.user.id
-        });
+        },
+        {
+            transaction: t
+});
 
         //adding total expense in user table 
-       const user = await User.findByPk(req.user.id);
+       const user = await User.findByPk(req.user.id,{
+    transaction: t
+});
 
         await user.update({
             totalExpense: Number(user.totalExpense) + Number(amount)
-        });
+        },
+    {
+    transaction: t
+});
+
+        await t.commit();
 
         res.status(201).json({
             success:true,
             message:"Expense Added",
             expense
         });
+
+        
+
     }
     catch(err){
+        await t.rollback();
+
         res.status(500).json({
             success:false,
             message:err.message
@@ -58,6 +78,8 @@ const addExpense=async(req,res)=>{
 
 const getExpenses=async(req,res)=>{
     try{
+        
+
         const expenses=await Expense.findAll({
             where:{
                 UserId:req.user.id
@@ -79,7 +101,12 @@ const getExpenses=async(req,res)=>{
 
 //delete expenses
 const deleteExpense = async (req, res) => {
+    let t;
+
     try {
+
+        
+        t =await sequelize.transaction();
 
         const expense = await Expense.findOne({
             where: {
@@ -95,13 +122,21 @@ const deleteExpense = async (req, res) => {
             });
         }
 
-        await expense.destroy();
+        await expense.destroy({
+            transaction:t
+        });
 
-        const user = await User.findByPk(req.user.id);
+        const user = await User.findByPk(req.user.id,{
+    transaction: t
+});
 
         await user.update({
             totalExpense: Number(user.totalExpense) - Number(expense.amount)
+        },{
+            transaction:t
         });
+
+        await t.commit();
 
         res.status(200).json({
             success: true,
@@ -109,6 +144,8 @@ const deleteExpense = async (req, res) => {
         });
 
     } catch (err) {
+        await t.rollback();
+
         res.status(500).json({
             success: false,
             message: err.message
