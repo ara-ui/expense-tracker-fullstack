@@ -1,16 +1,29 @@
 const Expense=require('../model/Expense');
+const aiService = require("../services/aiService");
+const User = require("../model/User");
 
 const addExpense=async(req,res)=>{
     try{
 
         
-        const {amount,description,category}=req.body;
+        const {amount,description}=req.body;
 
-        if(!amount || !description || !category){
+        if(!amount || !description ){
             return res.status(400).json({
                 success:false,
                 message:"All fields are required"
             });
+        }
+        
+
+        //get category from ai
+
+        let category="Other";
+
+        try{
+            category=await aiService.getCategory(description);
+        }catch(err){
+            console.log("AI Error:",err.message);
         }
 
         const expense= await Expense.create({
@@ -21,11 +34,10 @@ const addExpense=async(req,res)=>{
         });
 
         //adding total expense in user table 
-        await req.user.update({
+       const user = await User.findByPk(req.user.id);
 
-        totalExpense:
-            Number(req.user.totalExpense) + Number(amount)
-
+        await user.update({
+            totalExpense: Number(user.totalExpense) + Number(amount)
         });
 
         res.status(201).json({
@@ -66,41 +78,40 @@ const getExpenses=async(req,res)=>{
 };
 
 //delete expenses
+const deleteExpense = async (req, res) => {
+    try {
 
-const deleteExpense=async(req,res)=>{
-    try{
-        const id=req.params.id;
-
-        const expense=await Expense.findOne({
-            where:{
-                id:req.params.id,
-                UserId:req.user.id
+        const expense = await Expense.findOne({
+            where: {
+                id: req.params.id,
+                UserId: req.user.id
             }
         });
 
-        if(!expense){
+        if (!expense) {
             return res.status(404).json({
-                success:false,
-                message:"Expense not found"
+                success: false,
+                message: "Expense not found"
             });
         }
 
         await expense.destroy();
-     
-        //updating total expense in user table after one expense deleted
-        await req.user.update({
-            totalExpense:Number(req.user.totalExpense)-Number(expense.amount)
+
+        const user = await User.findByPk(req.user.id);
+
+        await user.update({
+            totalExpense: Number(user.totalExpense) - Number(expense.amount)
         });
 
         res.status(200).json({
-            success:true,
-            message:"Expense deleted"
+            success: true,
+            message: "Expense deleted"
         });
-    
-    }catch(err){
+
+    } catch (err) {
         res.status(500).json({
-            success:false,
-            message:err.message
+            success: false,
+            message: err.message
         });
     }
 };

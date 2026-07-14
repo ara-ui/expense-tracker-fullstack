@@ -50,13 +50,22 @@ async function addExpense(e){
 
     e.preventDefault();
 
+    //show processing in submit button
+    const addBtn = form.querySelector('button[type="submit"]');
+
+    addBtn.disabled = true;
+    addBtn.textContent = "Processing...";
+    addBtn.classList.add("processing");
+    //show loading
+    document.getElementById("loading").style.display = "block";
+
     const expense = {
 
         amount: document.getElementById("amount").value,
 
         description: document.getElementById("description").value,
 
-        category: document.getElementById("category").value
+        
 
     };
 
@@ -73,6 +82,12 @@ async function addExpense(e){
             }
 
         );
+        //hide loading
+         document.getElementById("loading").style.display = "none";
+
+         addBtn.disabled = false;
+        addBtn.textContent = "Add Expense";
+        addBtn.classList.remove("processing");
 
         showExpense(response.data.expense);
 
@@ -81,6 +96,12 @@ async function addExpense(e){
     }
 
     catch(err){
+         // HIDE LOADING EVEN IF THERE IS AN ERROR
+        document.getElementById("loading").style.display = "none";
+        
+        addBtn.disabled = false;
+        addBtn.textContent = "Add Expense";
+        addBtn.classList.remove("processing");
 
         console.log(err);
 

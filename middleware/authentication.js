@@ -6,7 +6,12 @@ const authenticate=async (req,res,next)=>{
         const token=req.header("Authorization");
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
+        //console.log("Decoded Token:", decoded);
+
         const user=await User.findByPk(decoded.userId);
+
+        //console.log("Logged in User:", user.id, user.name);
+
         req.user=user;
         next();
     }
