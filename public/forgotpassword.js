@@ -1,4 +1,5 @@
 const form = document.getElementById("forgotForm");
+const BASE_URL = "http://localhost:3000";
 
 form.addEventListener("submit", sendMail);
 
@@ -11,7 +12,7 @@ async function sendMail(e) {
     try {
 
         const response = await axios.post(
-            "http://localhost:3000/password/forgotpassword",
+            `${BASE_URL}/password/forgotpassword`,
             { email }
         );
 

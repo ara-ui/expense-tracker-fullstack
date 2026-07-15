@@ -1,4 +1,5 @@
 const form=document.getElementById("loginForm");
+const BASE_URL="http://localhost:3000";
 
 form.addEventListener("submit",loginUser);
 
@@ -10,7 +11,7 @@ async function loginUser(e){
         password:document.getElementById("password").value
     }
     try{
-        const response=await axios.post("http://localhost:3000/users/login",user);
+        const response=await axios.post(`${BASE_URL}/users/login`,user);
         localStorage.setItem("token", response.data.token);
         
         alert(response.data.message);

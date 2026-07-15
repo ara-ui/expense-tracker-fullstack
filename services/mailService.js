@@ -1,36 +1,60 @@
 const SibApiV3Sdk = require("sib-api-v3-sdk");
 
+// Initialize Brevo client
 const client = SibApiV3Sdk.ApiClient.instance;
 
+// Set API Key
 const apiKey = client.authentications["api-key"];
 apiKey.apiKey = process.env.BREVO_API_KEY;
 
-console.log(process.env.BREVO_API_KEY);
-console.log("BREVO KEY:", process.env.BREVO_API_KEY);
-
+// Initialize Transactional Email API
 const tranEmailApi = new SibApiV3Sdk.TransactionalEmailsApi();
 
-const sendMail = async (receiverEmail) => {
+const sendMail = async (receiverEmail, id) => {
+    try {
 
-    await tranEmailApi.sendTransacEmail({
+        const response = await tranEmailApi.sendTransacEmail({
 
-        sender: {
-            email: "zurikara9@gmail.com",
-            name: "Expense Tracker"
-        },
+            sender: {
+                email: "zurikara9@gmail.com",
+                name: "Expense Tracker"
+            },
 
-        to: [
-            {
-                email: receiverEmail
-            }
-        ],
+            to: [
+                {
+                    email: receiverEmail
+                }
+            ],
 
-        subject: "Forgot Password",
+            subject: "Reset Your Password",
 
-        textContent: "This is a dummy email from Expense Tracker."
+            htmlContent: `
+                <h2>Expense Tracker</h2>
+                <p>Click the button below to reset your password.</p>
 
-    });
+                <a href="http://localhost:3000/password/resetpassword/${id}">
+                    Reset Password
+                </a>
+            `
+        });
 
+        console.log("Mail sent successfully");
+        console.log(response);
+
+        return response;
+
+    } catch (err) {
+
+        console.log("BREVO ERROR:");
+
+        // Print the full error
+        console.log(err);
+
+        // Print Brevo response if available
+        console.log(err.response?.body);
+
+        throw err;   // Let the controller know the mail failed
+    }
 };
 
 module.exports = {

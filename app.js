@@ -38,7 +38,7 @@ app.use("/password", passwordRoutes);
 
 //sync database
 
-sequelize.sync({alter:true}).then(()=>{
+sequelize.sync().then(()=>{
     console.log("Table created succesfully");
     
     app.listen(3000,()=>{
