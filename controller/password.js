@@ -4,11 +4,7 @@ const ForgotPasswordRequest = require("../model/ForgotPasswordRequest");
 const { v4: uuidv4 } = require("uuid");
 const bcrypt = require("bcrypt");
 
-
-
-
 exports.forgotPassword = async (req, res) => {
-   
 
     try {
 
@@ -20,30 +16,25 @@ exports.forgotPassword = async (req, res) => {
             });
         }
 
-      
-
         const user = await User.findOne({
             where: { email }
         });
 
-
-        
         if (!user) {
             return res.status(404).json({
                 message: "User not found"
             });
         }
-        const id=uuidv4();
+
+        const id = uuidv4();
+
         await ForgotPasswordRequest.create({
-            id:id,
-            isActive:true,
-            UserId:user.id
+            id: id,
+            isActive: true,
+            UserId: user.id
         });
-      
 
-
-        await mailService.sendMail(email,id);
-        
+        await mailService.sendMail(email, id);
 
         return res.status(200).json({
             message: "Reset Password Link sent successfully"
@@ -60,8 +51,6 @@ exports.forgotPassword = async (req, res) => {
     }
 
 };
-
-
 
 exports.resetPassword = async (req, res) => {
 
@@ -82,6 +71,18 @@ exports.resetPassword = async (req, res) => {
 
         }
 
+        // Expire link after 15 minutes
+        const fifteenMinutes = 15 * 60 * 1000;
+
+        if (Date.now() - new Date(request.createdAt).getTime() > fifteenMinutes) {
+
+            request.isActive = false;
+            await request.save();
+
+            return res.status(400).send("Reset link has expired");
+
+        }
+
         res.sendFile(
             require("path").join(__dirname, "../public/resetpassword.html")
         );
@@ -99,10 +100,9 @@ exports.resetPassword = async (req, res) => {
 
 };
 
+exports.updatePassword = async (req, res) => {
 
-exports.updatePassword = async(req,res)=>{
-
-    try{
+    try {
 
         const id = req.params.id;
 
@@ -110,67 +110,79 @@ exports.updatePassword = async(req,res)=>{
 
         const request = await ForgotPasswordRequest.findOne({
 
-            where:{
-                id:id,
-                isActive:true
+            where: {
+                id: id,
+                isActive: true
             },
 
             include: User
 
         });
 
-        if(!request){
+        if (!request) {
 
             return res.status(400).json({
-
-                message:"Invalid or Expired Link"
-
+                message: "Invalid or Expired Reset Link"
             });
 
         }
 
-        const hashedPassword = await bcrypt.hash(password,10);
+        // Expire link after 15 minutes
+        const fifteenMinutes = 15 * 60 * 1000;
+
+        if (Date.now() - new Date(request.createdAt).getTime() > fifteenMinutes) {
+
+            request.isActive = false;
+            await request.save();
+
+            return res.status(400).json({
+                message: "Reset link has expired"
+            });
+
+        }
+
+        const hashedPassword = await bcrypt.hash(password, 10);
 
         await User.update(
 
             {
 
-                password:hashedPassword
+                password: hashedPassword
 
             },
 
             {
 
-                where:{
-                    id:request.UserId
+                where: {
+                    id: request.UserId
                 }
 
             }
 
         );
 
-        request.isActive=false;
+        request.isActive = false;
 
         await request.save();
 
         return res.status(200).json({
 
-            message:"Password Updated Successfully"
+            message: "Password Updated Successfully"
 
         });
 
     }
 
-    catch(err){
+    catch (err) {
 
         console.log(err);
 
         return res.status(500).json({
 
-            message:"Something went wrong"
+            message: "Something went wrong"
 
         });
 
     }
 
-}
+};

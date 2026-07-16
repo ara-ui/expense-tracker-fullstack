@@ -5,7 +5,7 @@ const form = document.getElementById("expenseForm");
 const expenseList = document.getElementById("expenseList");
 
 const premiumMessage = document.getElementById("premiumMessage");
-const leaderboardBtn = document.getElementById("leaderboardBtn");
+const premiumNav = document.getElementById("premiumNav");
 const premiumBtn = document.getElementById("rzp-button1");
 
 // Load all expenses
@@ -31,15 +31,23 @@ function showPremiumFeatures(){
 
     const decodedToken=jwt_decode(token);
 
-    if(decodedToken.isPremiumUser){
+     if(decodedToken.isPremiumUser){
 
-        premiumMessage.innerHTML="You are a Premium User now";
+        premiumMessage.innerHTML = "You are a Premium User now";
 
-        premiumBtn.style.display="none";
+        premiumBtn.style.display = "none";
 
-        leaderboardBtn.style.display="inline-block";
+        premiumNav.style.display = "flex";
+
+    }else{
+
+        premiumMessage.innerHTML = "";
+
+        premiumNav.style.display = "none";
+
+        premiumBtn.style.display = "block";
+
     }
-
 }
 
 

@@ -15,14 +15,23 @@
 <body>
 
     <button id="rzp-button1">Buy Premium Membership</button>
-    <div class="premium-section">
-    <h2 id="premiumMessage"></h2>
 
-    <button id="leaderboardBtn"
-        onclick="window.location.href='leaderboard.html'">
-        Show Leaderboard
-    </button>
-</div>
+    <div class="premium-section">
+        <h2 id="premiumMessage"></h2>
+
+        <div id="premiumNav" class="premium-nav">
+            <a href="expense.html" class="nav-link active">
+                Dashboard
+            </a>
+            <a href="leaderboard.html" class="nav-link">
+                Leaderboard
+            </a>
+            <a href="reports.html" class="nav-link">
+                Reports
+            </a>
+
+        </div>
+    </div>
 
     <form id="expenseForm">
         <label>Choose expense amount</label>
@@ -39,8 +48,10 @@
     <div class="spinner"></div>
     <p>Categorizing expense with AI...</p>
 </div>
+    <h1>Expenses</h1>
 
     <ul id="expenseList"></ul>
+    
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://sdk.cashfree.com/js/v3/cashfree.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>

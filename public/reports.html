@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Expense Reports</title>
+
+    <link rel="stylesheet" href="reports.css">
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>Expense Reports</h1>
+
+        <!-- Navigation -->
+
+        <div class="premium-nav">
+
+            <a href="expense.html"
+               class="nav-link">
+                Expenses
+            </a>
+
+            <a href="leaderboard.html"
+               class="nav-link">
+                Leaderboard
+            </a>
+
+            <a href="reports.html"
+               class="nav-link active">
+                Reports
+            </a>
+
+        </div>
+
+
+        <!-- Report Type -->
+
+        <div class="report-tabs">
+
+            <button class="tab active" data-view="daily">
+                Daily
+            </button>
+            <button class="tab" data-view="weekly">
+            Weekly
+            </button>
+
+            <button class="tab" data-view="monthly">
+                Monthly
+            </button>
+
+            <button class="tab" data-view="yearly">
+                Yearly
+            </button>
+
+        </div>
+
+
+        <!-- Date & Download -->
+
+        <div class="report-toolbar">
+
+            <div class="date-picker">
+
+                <button id="prevBtn">&lt;</button>
+
+                <span>16 July 2026</span>
+
+                <button id="nextBtn">&gt;</button>
+
+            </div>
+
+            <button class="download-btn">
+
+                Download Report
+
+            </button>
+
+        </div>
+
+
+        <!-- Summary -->
+
+        <div class="summary">
+
+            <div class="card">
+
+                <h3>Total Income</h3>
+
+                <p>₹0</p>
+
+            </div>
+
+            <div class="card">
+
+                <h3>Total Expense</h3>
+
+                <p>₹5,670</p>
+
+            </div>
+
+            <div class="card">
+
+                <h3>Savings</h3>
+
+                <p>-₹5,670</p>
+
+            </div>
+
+        </div>
+
+
+        <!-- Report Table -->
+
+        <h2 class="section-title">
+        Expense Details
+        </h2>
+
+        <div class="table-container">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>Date</th>
+
+                        <th>Description</th>
+
+                        <th>Category</th>
+
+                        <th>Amount</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <tr>
+
+                        <td>16 Jul</td>
+
+                        <td>Milk</td>
+
+                        <td>Food</td>
+
+                        <td>₹60</td>
+
+                    </tr>
+
+                    <tr>
+
+                        <td>16 Jul</td>
+
+                        <td>Fees</td>
+
+                        <td>Education</td>
+
+                        <td>₹4000</td>
+
+                    </tr>
+
+                    <tr>
+
+                        <td>16 Jul</td>
+
+                        <td>Travel</td>
+
+                        <td>Travel</td>
+
+                        <td>₹500</td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+    <script src="reports.js"></script>
+
+</body>
+
+</html>

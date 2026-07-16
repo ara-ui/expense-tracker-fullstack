@@ -75,6 +75,7 @@ h1{
     background:#0b5ed7;
 }
 
+
 /* Expense List */
 
 #expenseList{
@@ -150,35 +151,87 @@ h1{
 }
 
 .premium-section{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 20px 0;
-    gap: 60px;
+
+    width:100%;
+    max-width:1200px;
+
+    display:flex;
+    flex-direction:column;
+
+    align-items:flex-start;
+
+    margin:25px 0;
+
 }
-#leaderboardBtn{
-    display: none;
-    background: linear-gradient(135deg, #6a11cb, #2575fc);
-    color: white;
-    border: none;
-    padding: 12px 24px;
-    border-radius: 10px;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    margin-top: 12px;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 10px rgba(37,117,252,0.3);
+/* Premium Navigation */
+
+.premium-nav{
+
+    display:none;
+
+    width:100%;
+    max-width:1200px;
+
+    margin-top:25px;
+    padding-bottom:10px;
+
+    border-bottom:2px solid #e5e7eb;
+
+    justify-content:flex-start;
+    gap:35px;
+
 }
 
-#leaderboardBtn:hover{
-    transform: translateY(-2px);
-    box-shadow: 0 6px 15px rgba(37,117,252,0.5);
+.nav-link{
+
+    text-decoration:none;
+
+    color:#6b7280;
+
+    font-size:18px;
+
+    font-weight:600;
+
+    padding:8px 0;
+
+    position:relative;
+
+    transition:.3s;
+
 }
 
-#leaderboardBtn:active{
-    transform: scale(0.97);
+.nav-link:hover{
+
+    color:#2563eb;
+
 }
+
+.nav-link.active{
+
+    color:#2563eb;
+
+}
+.nav-link.active::after{
+
+    content:"";
+
+    position:absolute;
+
+    left:0;
+
+    bottom:-12px;
+
+    width:100%;
+
+    height:3px;
+
+    background:#2563eb;
+
+    border-radius:20px;
+
+}
+
+
 .spinner{
     width:30px;
     height:30px;
