@@ -32,11 +32,36 @@ body{
 
 }
 
-h1{
+.page-header{
 
-    text-align:center;
+    display:flex;
+    align-items:center;
+    gap: 15%;
+    margin-bottom:25px;
 
-    margin-bottom:20px;
+}
+
+.back-link{
+
+    text-decoration:none;
+    color:#2563eb;
+    font-size:34px;
+    font-weight:500;
+    line-height:1;
+    transition:.2s;
+
+}
+
+.back-link:hover{
+
+    color:#1d4ed8;
+    transform:translateX(-3px);
+
+}
+
+.page-header h1{
+
+    margin:0;
 
 }
 
@@ -64,22 +89,3 @@ li{
 
 }
 
-button{
-
-    width:100%;
-
-    margin-top:20px;
-
-    padding:12px;
-
-    border:none;
-
-    background:#2563eb;
-
-    color:white;
-
-    border-radius:8px;
-
-    cursor:pointer;
-
-}

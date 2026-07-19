@@ -7,10 +7,11 @@ const ai=new GoogleGenAI({
 
 async function getCategory(description){
 
-  const prompt = `
-Classify this expense.
+ const prompt = `
+You are an expense classifier.
 
-Categories:
+Choose exactly ONE category from this list:
+
 Food
 Travel
 Shopping
@@ -22,10 +23,14 @@ Salary
 Investment
 Other
 
-Expense:
-${description}
+Expense Description:
+"${description}"
 
-Return ONLY one category.
+Rules:
+- Reply with ONLY one word.
+- Do not explain.
+- Do not use punctuation.
+- Never create a new category.
 `;
 
 const response = await ai.models.generateContent({

@@ -161,4 +161,43 @@ const loginUser = async (req, res) => {
 
 };
 
-module.exports = { createUser, loginUser };
+//income part starts here
+
+const updatedincome=async(req,res)=>{
+    try{
+        const{monthlyIncome}=req.body;
+
+        req.user.monthlyIncome=monthlyIncome;
+        await req.user.save();
+
+        res.status(200).json({
+            success:true,
+            monthlyIncome:req.user.monthlyIncome
+        });
+    }
+    catch(err){
+        res.status(500).json({
+            success:false,
+            message:err.message
+        });
+    }
+}
+
+
+//get income
+
+const getincome=async (req,res)=>{
+    try{
+        res.status(200).json({
+            success:true,
+            monthlyIncome:req.user.monthlyIncome
+        });
+    }
+    catch(err){
+        res.status(500).json({
+            success:false,
+            message:err.message
+        });
+    }
+}
+module.exports = { createUser, loginUser,updatedincome ,getincome};

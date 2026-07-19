@@ -12,6 +12,7 @@ const expenseRoutes=require('./routes/expenseRoutes');
 const purchaseRoutes = require("./routes/purchaseRoutes");
 const premiumRoutes = require("./routes/premiumRoutes");
 const passwordRoutes = require("./routes/password");
+const reportsRoutes = require("./routes/reportsRoutes");
 
 
 
@@ -35,6 +36,7 @@ app.use('/expense',expenseRoutes);
 app.use('/purchase', purchaseRoutes);
 app.use("/premium", premiumRoutes);
 app.use("/password", passwordRoutes);
+app.use("/expense", reportsRoutes);
 
 //sync database
 

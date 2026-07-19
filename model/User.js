@@ -29,6 +29,10 @@ totalExpense: {
 isPremiumUser:{
     type:DataTypes.BOOLEAN,
     defaultValue:false
+},
+monthlyIncome: {
+    type: DataTypes.INTEGER,
+    defaultValue: 0
 }
 });
 

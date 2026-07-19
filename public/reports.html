@@ -10,15 +10,22 @@
 
     <title>Expense Reports</title>
 
-    <link rel="stylesheet" href="reports.css">
+    <link rel="stylesheet" href="css/reports.css">
 
 </head>
 
 <body>
 
     <div class="container">
+        
 
-        <h1>Expense Reports</h1>
+        <div class="page-header">
+
+            <a href="expense.html" class="back-link">&lt;</a>
+
+            <h1>Expense Reports</h1>
+
+        </div>
 
         <!-- Navigation -->
 
@@ -95,7 +102,7 @@
 
                 <h3>Total Income</h3>
 
-                <p>₹0</p>
+                <p id="income">₹0</p>
 
             </div>
 
@@ -103,7 +110,7 @@
 
                 <h3>Total Expense</h3>
 
-                <p>₹5,670</p>
+                <p id="expense">₹0</p>
 
             </div>
 
@@ -111,7 +118,7 @@
 
                 <h3>Savings</h3>
 
-                <p>-₹5,670</p>
+                <p id="saving">₹0</p>
 
             </div>
 
@@ -144,53 +151,15 @@
 
                 </thead>
 
-                <tbody>
-
-                    <tr>
-
-                        <td>16 Jul</td>
-
-                        <td>Milk</td>
-
-                        <td>Food</td>
-
-                        <td>₹60</td>
-
-                    </tr>
-
-                    <tr>
-
-                        <td>16 Jul</td>
-
-                        <td>Fees</td>
-
-                        <td>Education</td>
-
-                        <td>₹4000</td>
-
-                    </tr>
-
-                    <tr>
-
-                        <td>16 Jul</td>
-
-                        <td>Travel</td>
-
-                        <td>Travel</td>
-
-                        <td>₹500</td>
-
-                    </tr>
-
-                </tbody>
+                <tbody id="reportBody"></tbody>
 
             </table>
 
         </div>
 
     </div>
-
-    <script src="reports.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="js/reports.js"></script>
 
 </body>
 
