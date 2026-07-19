@@ -7,7 +7,7 @@ window.addEventListener("DOMContentLoaded", ()=>{
 
     getExpenses(currentPage);
     showPremiumFeatures();
-    loadIncome();
+    
 });
 
 
@@ -18,11 +18,7 @@ form.addEventListener("submit", addExpense);
 premiumBtn.addEventListener("click", buyPremium);
 
 
-updateBtn.addEventListener("click", showIncomeEditor);
 
-saveIncome.addEventListener("click", saveIncomeData);
-
-cancelIncome.addEventListener("click", cancelIncomeEdit);
 
 //rows per page
 

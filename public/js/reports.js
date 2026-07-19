@@ -317,4 +317,4 @@ async function getReport() {
 }
 
 
-updateDisplay();
+updateDisplay(); 

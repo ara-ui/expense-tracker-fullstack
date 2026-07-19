@@ -5,10 +5,9 @@
 
     <meta charset="UTF-8">
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Expense Reports</title>
+    <title>Expense Report</title>
 
     <link rel="stylesheet" href="css/reports.css">
 
@@ -16,150 +15,89 @@
 
 <body>
 
-    <div class="container">
-        
+<div class="container">
 
-        <div class="page-header">
+    <h1>Expense Report</h1>
 
-            <a href="expense.html" class="back-link">&lt;</a>
+    <div class="tabs">
 
-            <h1>Expense Reports</h1>
+        <button class="tab active" data-view="daily">Daily</button>
 
-        </div>
+        <button class="tab" data-view="weekly">Weekly</button>
 
-        <!-- Navigation -->
+        <button class="tab" data-view="monthly">Monthly</button>
 
-        <div class="premium-nav">
+        <button class="tab" data-view="yearly">Yearly</button>
 
-            <a href="expense.html"
-               class="nav-link">
-                Expenses
-            </a>
+    </div>
 
-            <a href="leaderboard.html"
-               class="nav-link">
-                Leaderboard
-            </a>
+    <div class="date-picker">
 
-            <a href="reports.html"
-               class="nav-link active">
-                Reports
-            </a>
+        <button id="prevBtn">◀</button>
 
-        </div>
+        <span></span>
 
+        <button id="nextBtn">▶</button>
 
-        <!-- Report Type -->
+    </div>
 
-        <div class="report-tabs">
+    <div class="summary">
 
-            <button class="tab active" data-view="daily">
-                Daily
-            </button>
-            <button class="tab" data-view="weekly">
-            Weekly
-            </button>
+        <div class="card">
 
-            <button class="tab" data-view="monthly">
-                Monthly
-            </button>
+            <h3>Income</h3>
 
-            <button class="tab" data-view="yearly">
-                Yearly
-            </button>
+            <h2 id="income">₹0</h2>
 
         </div>
 
+        <div class="card">
 
-        <!-- Date & Download -->
+            <h3>Expense</h3>
 
-        <div class="report-toolbar">
-
-            <div class="date-picker">
-
-                <button id="prevBtn">&lt;</button>
-
-                <span>16 July 2026</span>
-
-                <button id="nextBtn">&gt;</button>
-
-            </div>
-
-            <button class="download-btn">
-
-                Download Report
-
-            </button>
+            <h2 id="expense">₹0</h2>
 
         </div>
 
+        <div class="card">
 
-        <!-- Summary -->
+            <h3>Savings</h3>
 
-        <div class="summary">
-
-            <div class="card">
-
-                <h3>Total Income</h3>
-
-                <p id="income">₹0</p>
-
-            </div>
-
-            <div class="card">
-
-                <h3>Total Expense</h3>
-
-                <p id="expense">₹0</p>
-
-            </div>
-
-            <div class="card">
-
-                <h3>Savings</h3>
-
-                <p id="saving">₹0</p>
-
-            </div>
-
-        </div>
-
-
-        <!-- Report Table -->
-
-        <h2 class="section-title">
-        Expense Details
-        </h2>
-
-        <div class="table-container">
-
-            <table>
-
-                <thead>
-
-                    <tr>
-
-                        <th>Date</th>
-
-                        <th>Description</th>
-
-                        <th>Category</th>
-
-                        <th>Amount</th>
-
-                    </tr>
-
-                </thead>
-
-                <tbody id="reportBody"></tbody>
-
-            </table>
+            <h2 id="saving">₹0</h2>
 
         </div>
 
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="js/reports.js"></script>
+
+    <table>
+
+        <thead>
+
+            <tr>
+
+                <th>Date</th>
+
+                <th>Description</th>
+
+                <th>Category</th>
+
+                <th>Amount</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody id="reportBody">
+
+        </tbody>
+
+    </table>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+<script src="js/reports.js"></script>
 
 </body>
 
