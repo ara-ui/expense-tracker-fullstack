@@ -1,11 +1,24 @@
 require("dotenv").config();
 
+const PORT = process.env.PORT;
+
 const express=require('express');
 const sequelize=require('./db');
 const cors=require('cors');
 const path=require('path');
 
 require('./model');
+
+const morgan = require("morgan");
+const fs = require("fs");
+
+
+const accessLogStream = fs.createWriteStream(
+  path.join(__dirname, "access.log"),
+  { flags: "a" }
+);
+
+app.use(morgan("combined", { stream: accessLogStream }));
 
 const userRoutes=require('./routes/userRoutes');
 const expenseRoutes=require('./routes/expenseRoutes');
@@ -43,10 +56,10 @@ app.use("/expense", reportsRoutes);
 sequelize.sync().then(()=>{
     console.log("Table created succesfully");
     
-    app.listen(3000,()=>{
-    console.log("Server is running on port 3000");
+    app.listen(PORT,()=>{
+    console.log("Server is running.");
     });
-    console.log("BREVO KEY:", process.env.BREVO_API_KEY);
+    
 
 })
 .catch((err)=>{
