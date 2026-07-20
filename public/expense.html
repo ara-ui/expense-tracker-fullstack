@@ -35,21 +35,28 @@
 
 <!--drop down page limit-->
 
-    <div class="top-controls">
-        <div class="page-limit">
+  <div class="top-controls">
 
-            <label for="rowsPerPage">Expenses per page:</label>
+    <div class="page-limit">
 
-            <select id="rowsPerPage">
-                <option value="5">5</option>
-                <option value="10" selected>10</option>
-                <option value="20">20</option>
-                <option value="50">50</option>
-            </select>
-        </div>
+        <label for="rowsPerPage">Expenses per page:</label>
+
+        <select id="rowsPerPage">
+            <option value="5">5</option>
+            <option value="10" selected>10</option>
+            <option value="20">20</option>
+            <option value="50">50</option>
+        </select>
+
     </div>
-    
-   
+
+    <button id="downloadBtn" class="download-btn">
+        ⬇ Download Expenses
+    </button>
+
+</div>
+
+<div id="downloadLink" class="download-link"></div>
 
     <form id="expenseForm">
         <label>Choose expense amount</label>

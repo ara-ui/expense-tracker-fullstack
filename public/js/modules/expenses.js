@@ -172,3 +172,56 @@ async function deleteExpense(id, button){
     }
 
 }
+
+document
+.getElementById("downloadBtn")
+.addEventListener("click", downloadExpenses);
+
+async function downloadExpenses() {
+
+    try {
+
+        const token = localStorage.getItem("token");
+
+        const response = await axios.get(
+            `${BASE_URL}/users/download`,
+            {
+                headers: {
+                    Authorization: token
+                }
+            }
+        );
+
+        if (response.data.success) {
+
+        const linkDiv = document.getElementById("downloadLink");
+
+        linkDiv.style.display="block";
+
+        linkDiv.innerHTML = `
+        <div class="download-success">
+
+            <span>✅ Report Generated Successfully</span>
+
+            <a href="${response.data.fileURL}" target="_blank">
+                Download Report
+            </a>
+
+        </div>
+        `;
+        }
+
+    }
+
+    catch (err) {
+
+    console.log(err);
+
+    if (err.response) {
+        alert(err.response.data.message);
+    } else {
+        alert(err.message);
+    }
+}
+
+}

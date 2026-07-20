@@ -1,6 +1,9 @@
 const User = require('../model/User');
+const Expense = require("../model/Expense");
+const S3Service = require("../services/S3Service");
 const bcrypt = require("bcrypt");
 const jwt=require('jsonwebtoken');
+
 
 //token generation func
 function generateAccessToken(id, name, isPremiumUser){
@@ -200,4 +203,47 @@ const getincome=async (req,res)=>{
         });
     }
 }
-module.exports = { createUser, loginUser,updatedincome ,getincome};
+
+
+
+const downloadExpenses = async (req, res) => {
+
+    try {
+
+        if (!req.user.isPremiumUser) {
+            return res.status(401).json({
+                success: false,
+                message: "Unauthorized"
+            });
+        }
+
+        const expenses = await Expense.findAll({
+            where: {
+                userId: req.user.id
+            }
+        });
+
+        const data = JSON.stringify(expenses);
+
+        const filename = `Expenses/User-${req.user.id}/${Date.now()}.txt`;
+
+        const fileURL = await S3Service.uploadToS3(data, filename);
+
+        return res.status(200).json({
+            success: true,
+            fileURL
+        });
+
+    } catch (err) {
+
+        console.log(err);
+
+        res.status(500).json({
+            success: false,
+            message: "Something went wrong"
+        });
+
+    }
+
+};
+module.exports = { createUser, loginUser,updatedincome ,getincome,downloadExpenses};

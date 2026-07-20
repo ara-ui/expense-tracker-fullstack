@@ -1,8 +1,8 @@
 require("dotenv").config();
 
 const PORT = process.env.PORT;
-
 const express=require('express');
+const app=express();
 const sequelize=require('./db');
 const cors=require('cors');
 const path=require('path');
@@ -30,7 +30,7 @@ const reportsRoutes = require("./routes/reportsRoutes");
 
 
 
-const app=express();
+
 
 
 
